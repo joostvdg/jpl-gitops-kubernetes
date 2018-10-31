@@ -17,7 +17,7 @@ Will set the build to Unstable if any issue is found.
 <br>
 <h2>Requirements</h2>
 <ul>
-    <li>Requires <strong>curl<strong> to be on the PATH</li>
+    <li>Requires <strong>curl</strong> to be on the PATH</li>
 </ul>
 <br>
 <h2>Example</h2>
