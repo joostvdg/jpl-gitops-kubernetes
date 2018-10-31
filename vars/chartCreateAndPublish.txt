@@ -9,6 +9,7 @@ Creates and publishes a Helm chart via Helm and Curl.
     <li><strong>chartVersion</strong>: dockerfile to use, <em>Dockerfile</em> by default, specify value to override.</li>
     <li><strong>repoUrl</strong>: additional parameters to give to kaniko build, <em>''</em> by default, specify value to override.</li>
     <li><strong>repoCredentialsId</strong>: kubernetes plugin container name, <em>kaniko</em> by default, specify value to override.</li>
+    <li><strong>helmFolder</strong>(optional): folder in which the helm chart resides, <em>helm/</em> (notice the trailing /) by default, specify value to override.</li>
     <li><strong>containerName</strong>(optional): kubernetes plugin container name, <em>helm</em> by default, specify value to override.</li>
 </ul>
 <br>
