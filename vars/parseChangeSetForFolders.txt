@@ -1,0 +1,26 @@
+<h1>parseChangeSetForFolders</h1>
+<p>
+Parses a git change set for folders that have changed.
+</p>
+<p>
+For example, if you want to see if inside the folder <em>src/main</em> there was a change in src/main/java, src/main/kotlin or src/main/resources.
+<br>
+You would call <em>parseChangeSetForFolders(gitChangeSetData, 'src/main/')</em>
+</p>
+<br>
+<h2>Arguments</h2>
+<ul>
+    <li><strong>gitChangeSet</strong>: the git change set, limited to name of files only</li>
+    <li><strong>changeRoot</strong>: the root folder from which to look</li>
+</ul>
+<br>
+<h2>Requirements</h2>
+...
+<h2>Example</h2>
+<pre>
+<code>
+def changeSetData = sh returnStdout: true, script: "git diff-tree --no-commit-id --name-only -r ${commit}"
+changeSetData = changeSetData.replace("\n", "\\n")
+def changeSetFolders = parseChangeSetForFolders(changeSetData, 'rootFolderToFilter')
+</code>
+</pre>

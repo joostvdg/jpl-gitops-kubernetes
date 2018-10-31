@@ -1,0 +1,41 @@
+<h1>chartExists</h1>
+<p>
+Queries a Helm Chart Repository to see if a Chart with a specific version already exists.
+<br>
+Will set the build to Unstable if any issue is found.
+</p>
+<br>
+<h2>Arguments</h2>
+<ul>
+    <li><strong>baseUrl</strong>: base url for the helm chart repository</li>
+    <li><strong>chart</strong>: chart name</li>
+    <li><strong>version</strong>: chart version</li>
+    <li><strong>expectedCode</strong>: expected http code, for example <strong>200</strong></li>
+    <li><strong>credentialsId</strong>: the credentialsId to use for authenticating with the repository</li>
+    <li><strong>insecure</strong>: wether or not curl should accept a insecure connection (for example, a staging or self-signed certificate)</li>
+</ul>
+<br>
+<h2>Requirements</h2>
+<ul>
+    <li>Requires <strong>curl<strong> to be on the PATH</li>
+</ul>
+<br>
+<h2>Example</h2>
+<pre>
+<code>
+stage('Update Chart') {
+    when {
+        not {// if with this version does NOT exist
+            expression {
+                container("helm") {
+                    chartExists("${CM_ADDR}", "${CHART_NAME}", "${CHART_VERSION}", "200", "${CM_CREDS}", true)
+                }
+            }
+        }
+    }
+    steps {
+        echo 'Hello'
+    }
+}
+</code>
+</pre>

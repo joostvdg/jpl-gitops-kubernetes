@@ -1,0 +1,51 @@
+<h1>dockerfileLintK8s</h1>
+<p>
+Executes a best practices analysis on a <em>Dockerfile</em>.
+<br>
+Will set the build to Unstable if any issue is found.
+</p>
+<br>
+<h2>Arguments</h2>
+<ul>
+    <li><strong>fileName</strong>(optional): file to lint, <em>Dockerfile</em> by default, specify value to override.</li>
+</ul>
+<br>
+<h2>Requirements</h2>
+<ul>
+    <li>Requires <a href="https://github.com/hadolint/hadolint">Hadolint</a> to be on the PATH</li>
+    <li>Assumes linux filesystem</li>
+</ul>
+<br>
+<h2>Example</h2>
+<pre>
+<code>
+pipeline {
+    agent {
+        kubernetes {
+            label 'jenkins-agent-cat-nip'
+            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: hadolint
+    image: hadolint/hadolint:latest-debian
+    command:
+    - cat
+    tty: true
+            """
+        }
+    }
+    stages {
+        stage('Lint') {
+            steps {
+                container('hadolint') {
+                    dockerfileLintK8s() // for Dockerfile
+                    dockerfileLintK8s('Dockerfile.run') // for alternative Dockerfile, in this case Dockerfile.run
+                }
+            }
+        }
+    }
+}
+</code>
+</pre>
