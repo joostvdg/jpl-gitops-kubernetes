@@ -1,0 +1,27 @@
+<h1>chartCreateAndPublish</h1>
+<p>
+Creates and publishes a Helm chart via Helm and Curl.
+</p>
+<br>
+<h2>Arguments</h2>
+<ul>
+    <li><strong>chartName</strong>: destination of the resulting image, should be a complete destination: $repository/$user/$image:$tag (DockerHub example: index.docker.io/caladreas/cat:test)</li>
+    <li><strong>chartVersion</strong>: dockerfile to use, <em>Dockerfile</em> by default, specify value to override.</li>
+    <li><strong>repoUrl</strong>: additional parameters to give to kaniko build, <em>''</em> by default, specify value to override.</li>
+    <li><strong>repoCredentialsId</strong>: kubernetes plugin container name, <em>kaniko</em> by default, specify value to override.</li>
+    <li><strong>containerName</strong>(optional): kubernetes plugin container name, <em>helm</em> by default, specify value to override.</li>
+</ul>
+<br>
+<h2>Requirements</h2>
+<ul>
+    <li>Kubernetes plugin with a container configured that has <strong>curl</strong> and <strong>helm<strong> on its PATH</li>
+</ul>
+<br>
+<h2>Example</h2>
+<pre>
+<code>
+stage('Chart Update') {
+    chartCreateAndPublish('myChart', '0.1.0', 'charts.example.com', 'helmCreds')
+}
+</code>
+</pre>

@@ -1,0 +1,84 @@
+<h1>kanikoBuild</h1>
+<p>
+Executes a best docker image build with <a href="https://github.com/GoogleContainerTools/kaniko">Kaniko</a>, so that you do not need a docker client/socket.
+</p>
+<br>
+<h2>Arguments</h2>
+<ul>
+    <li><strong>destination</strong>: destination of the resulting image, should be a complete destination: $repository/$user/$image:$tag (DockerHub example: index.docker.io/caladreas/cat:test)</li>
+    <li><strong>dockerfile</strong>(optional): dockerfile to use, <em>Dockerfile</em> by default, specify value to override.</li>
+    <li><strong>params</strong>(optional): additional parameters to give to kaniko build, <em>''</em> by default, specify value to override.</li>
+    <li><strong>containerName</strong>(optional): kubernetes plugin container name, <em>kaniko</em> by default, specify value to override.</li>
+</ul>
+<br>
+<h2>Requirements</h2>
+<ul>
+    <li>Kubernetes plugin with a <strong>kaniko</strong> container configured</li>
+</ul>
+<br>
+<h2>Example</h2>
+<pre>
+<code>
+pipeline {
+    libraries {
+        lib('core@master')
+        lib('gitops-k8s@master')
+    }
+    agent {
+        kubernetes {
+            //cloud 'kubernetes'
+            label 'kaniko'
+            yaml """
+kind: Pod
+metadata:
+    name: kaniko
+spec:
+    containers:
+    - name: golang
+    image: golang:1.11
+    command:
+    - cat
+    tty: true
+    - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
+    command:
+    - /busybox/cat
+    tty: true
+    volumeMounts:
+        - name: jenkins-docker-cfg
+        mountPath: /root
+    volumes:
+    - name: jenkins-docker-cfg
+    projected:
+        sources:
+        - secret:
+            name: regcred
+            items:
+            - key: .dockerconfigjson
+                path: .docker/config.json
+"""
+        }
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/joostvdg/cat.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                container('golang') {
+                    sh './build-go-bin.sh'
+                }
+            }
+        }
+        stage('Make Image') {
+            steps {
+                kanikoBuild('index.docker.io/caladreas/cat:test', 'Dockerfile.run')
+            }
+        }
+    }
+}
+</code>
+</pre>

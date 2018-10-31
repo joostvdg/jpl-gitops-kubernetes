@@ -1,4 +1,4 @@
-def call(dockerfile, destination, params = '', containerName = 'kaniko') {
+def call(destination, dockerfile = 'Dockerfile', params = '', containerName = 'kaniko') {
     container(name: containerName, shell: '/busybox/sh') {
         withEnv(['PATH+EXTRA=/busybox', "FILE=${dockerfile}", "DEST=${destination}", "PARAMS=$params"]) {
             sh '''#!/busybox/sh
