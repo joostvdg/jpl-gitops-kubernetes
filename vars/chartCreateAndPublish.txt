@@ -16,6 +16,7 @@ Creates and publishes a Helm chart via Helm and Curl.
 <h2>Requirements</h2>
 <ul>
     <li>Kubernetes plugin with a container configured that has <strong>curl</strong> and <strong>helm<strong> on its PATH</li>
+    <li>The version supplied in the command should match the current version in your chart.yml!</li>
 </ul>
 <br>
 <h2>Example</h2>
